@@ -14,11 +14,28 @@
     ></script>
   </head>
   <body>
-      <h1 class="text-5xl">DOFHarambe</h1>
-      {{ range .friends }}
-        
-        <p class="text-2xl p-6">{{ .Name }}, {{ .Email }}, {{ .Phone }}</p>
-
-      {{ end }}
+    <div class="flex">
+      <div>
+        <form hx-post="/add-contact/" hx-target="#contact-list" hx-swap="beforeend">
+          <label for="contact-name">Name:</label>
+          <input type="text" name="name" id="contact-name" class="border border-black"/>
+          <label for="contact-email">Email:</label>
+          <input type="text" name="email" id="contact-email" class="border border-black" />
+          <label for="contact-phone">Phone:</label>
+          <input type="text" name="phone" id="contact-phone" class="border border-black" />
+          <button type="submit">Add contact</button>
+        </form>
+      </div>
+      <div>
+        <h1 class="text-5xl">Contacts</h1>
+        <ul id="contact-list">
+          {{ range .Contacts }}
+          {{ block "contact-list-element" . }}
+          <li class="text-2xl">{{ .Name }}, {{ .Email }}, {{ .Phone }}</li>
+          {{ end }}
+          {{ end }}
+        </ul>
+      </div>
+    </div>
   </body>
 </html>
