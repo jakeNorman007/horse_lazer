@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>TOP SECRET WEBSITE</title>
+    <link rel="icon" href="./favicon.ico" type="image/x-icon" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+      src="https://unpkg.com/htmx.org@1.9.8"
+      integrity="sha384-rgjA7mptc2ETQqXoYC3/zJvkU7K/aP44Y+z7xQuJiVnB/422P/Ak+F/AqFR7E4Wr"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+      <h1 class="text-5xl">DOFHarambe</h1>
+      {{ range .friends }}
+        
+        <p class="text-2xl p-6">{{ .Name }}, {{ .Email }}, {{ .Phone }}</p>
+
+      {{ end }}
+  </body>
+</html>

@@ -1,36 +1,53 @@
 package main
 
 import (
+	"fmt"
+	"html/template"
+	"log"
 	"net/http"
-	"github.com/gin-gonic/gin"
-	// "github.com/JakeNorman007/horse_lazer/cmd/controllers"
-	"github.com/JakeNorman007/horse_lazer/cmd/initializers"
 )
 
-func init(){
-    initializers.LoadEnvVar()
-    initializers.ConnectToDB()
+//"github.com/JakeNorman007/horse_lazer/cmd/controllers"
+//"github.com/JakeNorman007/horse_lazer/cmd/initializers"
+//"github.com/gin-gonic/gin"
+
+//func init(){
+//initializers.LoadEnvVar()
+//initializers.ConnectToDB()
+//}
+
+type Friend struct{
+    Name    string
+    Email   string
+    Phone   string
 }
 
 func main() {
-    r := gin.Default()
-    
-    r.LoadHTMLGlob("src/*")
+    fmt.Println("Server connected.")
 
-    r.GET("/", func(c *gin.Context){
-        c.HTML(http.StatusOK, "index.html", nil)
-    })
-    r.Run(":42069")
+    handlerOne := func(w http.ResponseWriter, r *http.Request){
+        tmpl := template.Must(template.ParseFiles("src/views/index.html"))
+        friends := map[string][]Friend{
+            "friends": {
+                {Name: "Jake Norman", Email: "jake@example.com", Phone: "555-555-5555"},
+                {Name: "Kazmir Dinse", Email: "kazmir@example.com", Phone: "444-444-4444"},
+                {Name: "Elliott Norman", Email: "elliott@example.com", Phone: "333-333-3333"},
+            },
+        }
+        tmpl.Execute(w, friends)
+    }
 
-    // going to use static data for this project to keep it extra simple
-    // so I can just mess with some HTMX for fun
-    // creating database was more for prcatice for an upcoming project
-    //
-    // r.GET("/", controllers.FriendsShow)
-    // r.GET("/:id", controllers.FriendShowById)
-    // r.POST("/", controllers.FriendCreate)
-    // r.PUT("/:id", controllers.FriendUpdate)
-    // r.DELETE("/:id", controllers.FriendDelete)
+    http.HandleFunc("/", handlerOne)
 
-    // r.Run() //localhost:42069
+    log.Fatal(http.ListenAndServe(":42069", nil))
+    //r := gin.Default()
+
+    // routes, will probably put these in their own file
+    //r.GET("/friends", controllers.FriendsShow)
+    //r.GET("/friend/:id", controllers.FriendShowById)
+    //r.POST("/friend", controllers.FriendCreate)
+    //r.PUT("/friend/:id", controllers.FriendUpdate)
+    //r.DELETE("/friend/:id", controllers.FriendDelete)
+
+    //r.Run() //localhost:42069
 }
